@@ -28,8 +28,22 @@ def hello_world():
 
     # get a specific key called "name" if available, otherwise use some specified default value
     # see also: https://www.w3schools.com/python/ref_dictionary_get.asp
+
+
     name = url_params.get("name") or "World"
 
     message = f"Hello, {name}!"
     return message
     #return render_template("hello.html", message=message)
+
+@home_routes.route("/api/books.json")
+def books():
+    print("BOOKS...")
+    books = [
+        {"id":1, "title": "Harry Potter", "author": "JK Rowling"},
+        {"id":2, "title": "Lord of the Rings", "author": "Tolkien"},
+        {"id":3, "title": "Hunder Games", "author": "Collins"},
+
+    ]
+    return books
+    #return render_template("about.html")

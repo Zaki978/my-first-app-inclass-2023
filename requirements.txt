@@ -19,3 +19,6 @@ flask
 #TEST 
 
 pytest 
+
+#PRODUCTION SERVERS NEEDS THIS TO RUN THE WEB APP 
+gunicorn

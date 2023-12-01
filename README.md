@@ -46,6 +46,13 @@ python app/my_script.py
 Run the unemployment report:
 
 ```sh
+
+python -m app.stocks
+```
+
+Run the stocks report:
+
+```sh
 #python app/unemployment.py
 
 python -m app.unemployment
@@ -56,6 +63,22 @@ Send an example email:
 ```sh
 python app/email_service.py
 ```
+
+### Web
+
+Run the web app (then view in the browser at http://localhost:5000/):
+
+```sh
+# Mac OS:
+FLASK_APP=web_app flask run
+
+# Windows OS:
+# ... if `export` doesn't work for you, try `set` instead
+# ... or set FLASK_APP variable via ".env" file
+export FLASK_APP=web_app
+flask run
+```
+
 
 ## Testing
 

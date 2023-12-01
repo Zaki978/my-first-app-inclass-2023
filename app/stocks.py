@@ -1,36 +1,49 @@
+# this is the "app/stocks.py" file...
 
-# this is the "test/stocks_test.py" file...
+from pandas import read_csv
 
-from app.stocks import format_usd, fetch_stocks_data
-
-from pandas import DataFrame
-
+from app.alpha import API_KEY
 
 
-def test_usd_formatting():
-
-    assert format_usd(4.5) == "$4.50"
-
-    assert format_usd(4.5555555) == "$4.56"
-
-    assert format_usd(1234567890) == "$1,234,567,890.00"
-
-    #assert format_usd("OOPS") == "______"
+def format_usd(my_price):
+    return f"${my_price:,.2f}"
 
 
+def fetch_stocks_data(symbol):
+    request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={API_KEY}&datatype=csv"
 
-def test_data_fetching():
-    result = fetch_stocks_data("NFLX")
-    # it should return a dataframe:
-    assert isinstance(result, DataFrame)
-    # ... with specific columns:
-    assert "timestamp" in result.columns
-    assert "adjusted_close" in result.columns
-    assert "high" in result.columns
-    assert "low" in result.columns
-    # ... with 100 rows, representing the latest trading days:
-    assert len(result) >= 100
+    df = read_csv(request_url)
+
+    return df
 
 
-    #result = fetch_stocks_data("OOPS")
-    # todo: test invalid inputs. what should happen?
+
+if __name__ == "__main__":
+
+    print("STOCKS REPORT...")
+
+    symbol = input("Please input a stock symbol (default: 'NFLX'): ") or "NFLX"
+    print("SYMBOL:", symbol)
+
+    df = fetch_stocks_data(symbol)
+
+    print(df.columns)
+    print(df.head())
+    #breakpoint()
+
+    # CHALLENGE A:
+    # print the latest closing date and price
+
+    latest = df.iloc[0]
+
+    #print(latest["timestamp"])
+    #print(latest["close"])
+    print("LATEST:", format_usd(latest["adjusted_close"]), "as of", latest["timestamp"])
+
+    # Challenge B
+    #
+    # What is the highest high price (formatted as USD)?
+    # What is the lowest low price (formatted as USD)?
+
+    print("HIGH:", format_usd(df["high"].max()))
+    print("LOW:", format_usd(df["low"].min()))
